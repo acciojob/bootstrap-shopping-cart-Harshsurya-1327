@@ -44,96 +44,135 @@
     .summary .btn:hover {
       background: #5ea4f3;
     }
+    .quantity {
+      width: 60px;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Block Heading -->
-    <div class="block-heading">
-      <h2>Shopping Cart</h2>
-      <p>Review your items and proceed to checkout</p>
-    </div>
+<div class="container">
+  <!-- Heading -->
+  <div class="block-heading">
+    <h2>Shopping Cart</h2>
+    <p>Review your items and proceed to checkout</p>
+  </div>
 
-    <div class="row">
-      <!-- Left Column (Products) -->
-      <div class="col-lg-8">
-        <!-- Product 1 -->
-        <div class="product row align-items-center">
+  <!-- Main Row -->
+  <div class="row">
+    <!-- Products Column -->
+    <div class="col-lg-8">
+      <!-- Product 1 -->
+      <div class="product">
+        <div class="row align-items-center">
           <div class="col-3">
-            <a href="#">
-              <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 1">
-            </a>
+            <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 1">
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <h6>Product 1</h6>
             <p class="text-muted">Description of Product 1</p>
           </div>
-          <div class="col-3 text-end">
-            <span class="fw-bold">$15</span>
+          <div class="col-2">
+            <input type="number" class="form-control quantity" value="1" min="1" data-price="15">
+          </div>
+          <div class="col-2 text-end">
+            <span class="fw-bold price">$15</span>
           </div>
         </div>
+      </div>
 
-        <!-- Product 2 -->
-        <div class="product row align-items-center">
+      <!-- Product 2 -->
+      <div class="product">
+        <div class="row align-items-center">
           <div class="col-3">
-            <a href="#">
-              <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 2">
-            </a>
+            <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 2">
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <h6>Product 2</h6>
             <p class="text-muted">Description of Product 2</p>
           </div>
-          <div class="col-3 text-end">
-            <span class="fw-bold">$25</span>
+          <div class="col-2">
+            <input type="number" class="form-control quantity" value="1" min="1" data-price="25">
+          </div>
+          <div class="col-2 text-end">
+            <span class="fw-bold price">$25</span>
           </div>
         </div>
+      </div>
 
-        <!-- Product 3 -->
-        <div class="product row align-items-center">
+      <!-- Product 3 -->
+      <div class="product">
+        <div class="row align-items-center">
           <div class="col-3">
-            <a href="#">
-              <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 3">
-            </a>
+            <img src="https://via.placeholder.com/100" class="img-fluid" alt="Product 3">
           </div>
-          <div class="col-6">
+          <div class="col-5">
             <h6>Product 3</h6>
             <p class="text-muted">Description of Product 3</p>
           </div>
-          <div class="col-3 text-end">
-            <span class="fw-bold">$30</span>
+          <div class="col-2">
+            <input type="number" class="form-control quantity" value="1" min="1" data-price="30">
           </div>
-        </div>
-      </div>
-
-      <!-- Right Column (Summary) -->
-      <div class="col-lg-4 ms-auto"> <!-- ms-auto pushes it to the right -->
-        <div class="summary">
-          <h5>Summary</h5>
-          <div class="d-flex justify-content-between">
-            <span>Subtotal</span>
-            <span>$70</span>
+          <div class="col-2 text-end">
+            <span class="fw-bold price">$30</span>
           </div>
-          <div class="d-flex justify-content-between">
-            <span>Discount</span>
-            <span>-$10</span>
-          </div>
-          <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
-            <span>Shipping</span>
-            <span>$5</span>
-          </div>
-          <div class="d-flex justify-content-between fw-bold mb-3">
-            <span>Total</span>
-            <span>$65</span>
-          </div>
-          <button class="btn">Checkout</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Summary Column -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+      <div class="summary">
+        <h5>Summary</h5>
+        <div class="d-flex justify-content-between">
+          <span>Subtotal</span>
+          <span id="subtotal">$70</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Discount</span>
+          <span id="discount">-$10</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+          <span>Shipping</span>
+          <span id="shipping">$5</span>
+        </div>
+        <div class="d-flex justify-content-between fw-bold mb-3">
+          <span>Total</span>
+          <span id="total">$65</span>
+        </div>
+        <button class="btn">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Dynamic Price Calculation -->
+<script>
+const quantities = document.querySelectorAll('.quantity');
+
+function updatePrices() {
+  let subtotal = 0;
+  quantities.forEach(input => {
+    const price = parseFloat(input.dataset.price);
+    const quantity = parseInt(input.value);
+    const totalPrice = price * quantity;
+    input.closest('.product').querySelector('.price').textContent = '$' + totalPrice;
+    subtotal += totalPrice;
+  });
+  const discount = 10;
+  const shipping = 5;
+  const total = subtotal - discount + shipping;
+
+  document.getElementById('subtotal').textContent = '$' + subtotal;
+  document.getElementById('total').textContent = '$' + total;
+}
+
+quantities.forEach(input => input.addEventListener('input', updatePrices));
+updatePrices();
+</script>
+
 </body>
 </html>
